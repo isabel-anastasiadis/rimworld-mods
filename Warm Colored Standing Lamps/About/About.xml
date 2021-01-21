@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ModMetaData>
+  <name>Warm colored standing lamps</name>
+  <author>Izzimon</author>
+  <supportedVersions>
+    <li>1.2</li>
+  </supportedVersions>
+  <packageId>izzimon.warmcoloredstandinglamps</packageId>
+  <description>
+Changes the light of all the basic standing lamps to match the color of torch lamps for that warm and cozy feel.
+
+Does not require a new save game, and can be safely enabled and disabled without impact.
+  </description>
+</ModMetaData>

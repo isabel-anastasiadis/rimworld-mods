@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ModMetaData>
+  <name>Wooden Floors Look Nice</name>
+  <author>izzimon</author>
+  <supportedVersions>
+    <li>1.2</li>
+  </supportedVersions>
+  <packageId>izzimon.woodenfloorsarebeautiful</packageId>
+  <description>
+Not sure about you, but I find wooden flooring looks the nicest, both in the game and in real life.  
+Wooden floors are also debuffed enough due to their flammability.
+
+This mod patches the beauty of the standard wooden flooring to be 2 (instead of 0).
+
+Does not require a new save game, and can be safely enabled and disabled without impact.
+  </description>
+</ModMetaData>

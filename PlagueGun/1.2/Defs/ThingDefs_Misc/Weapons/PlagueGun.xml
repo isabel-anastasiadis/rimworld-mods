@@ -17,7 +17,7 @@
         </projectile>
         <modExtensions>
             <li Class="IZZIMON_PlagueGun.ModExtension_PlagueBullet">
-                <addHediffChance>0.05</addHediffChance>
+                <addHediffChance>0.5</addHediffChance>
                 <hediffToAdd>Plague</hediffToAdd>
             </li>
         </modExtensions>

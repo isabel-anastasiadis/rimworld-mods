@@ -1,9 +1,5 @@
 ﻿using RimWorld;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using UnityEngine;
 using Verse;
 
@@ -12,11 +8,27 @@ namespace Izzimon.BloodDries
     public class Blood : Filth
     {
         // to add to the def to configure later
-        private Color freshBloodColor = new Color(131, 34, 34, 180);
-        private Color driedBloodColor = new Color(77, 54, 54, 180);
-        private static int daysUntilFullyDry = 3;
-        private float ticksUntilFullyDry = daysUntilFullyDry * 60000f;
+        private static Color FreshBloodColor = new Color(131, 34, 34, 180);
+        private static Color DriedBloodColor = new Color(77, 54, 54, 180);
+        private static int DaysUntilFullyDry = 3;
 
+
+        private int gameTickConstructedIn; 
+
+
+        public Blood() {
+            this.gameTickConstructedIn = Find.TickManager.TicksGame;      
+        }
+
+        private float PercentageDried { 
+            get {
+                var ageInTicks = Find.TickManager.TicksGame - this.gameTickConstructedIn;
+
+                var ageInDays = ageInTicks / 60000f;
+
+                return Math.Min(ageInDays/ DaysUntilFullyDry, 1f);
+            } 
+        }
 
         public override void SpawnSetup(Map map, bool respawningAfterLoad)
         {
@@ -34,18 +46,38 @@ namespace Izzimon.BloodDries
             MoteMaker.ThrowText(base.Position.ToVector3(), base.Map, "Blood spawned", 3f);
         }
 
-        // this doesn't seem to be working for some reason
-        public override Graphic Graphic {
 
-            get {
+        private float GetCurrentValue(float from, float to) {
 
-                var graphic = DefaultGraphic;
+            var difference = (to - from) * PercentageDried;
+            return from + difference;
+        }
 
-                graphic.color = new Color(driedBloodColor.r, driedBloodColor.g, driedBloodColor.b, 180);
 
-                return graphic;
+        public override Color DrawColor
+        {
+            get
+            {
+                var red = GetCurrentValue(FreshBloodColor.r, DriedBloodColor.r);
+                var green = GetCurrentValue(FreshBloodColor.g, DriedBloodColor.g);
+                var blue = GetCurrentValue(FreshBloodColor.b, DriedBloodColor.b);
+
+                return new Color(red, green, blue, 180);
+            }
+            set
+            {
+                Log.Error(string.Concat(new object[]
+                {
+                    "Cannot set instance color on non-ThingWithComps ",
+                    this.LabelCap,
+                    " at ",
+                    this.Position,
+                    "."
+                }));
             }
         }
+
+
 
     }
 }

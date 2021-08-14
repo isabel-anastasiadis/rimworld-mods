@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<Patch>
+
+  <Operation Class="PatchOperationReplace">
+    <xpath>/Defs/ThingDef[defName="StandingLamp"]/comps/li/glowColor</xpath>
+    <value>
+	    <!-- Standing lamp glow color is normally (217,217,208,0) -->
+      <glowColor>(252,187,113,0)</glowColor>
+    </value>
+  </Operation>
+
+</Patch>

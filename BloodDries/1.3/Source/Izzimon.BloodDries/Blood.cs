@@ -10,7 +10,7 @@ namespace Izzimon.BloodDries
         // to add to the def to configure later
         private static Color FreshBloodColor = new Color(131, 34, 34, 180);
         private static Color DriedBloodColor = new Color(77, 54, 54, 180);
-        private static int DaysUntilFullyDry = 3;
+        private static int DaysUntilFullyDry = 1;
 
 
         private int gameTickConstructedIn; 

@@ -15,9 +15,3 @@ The tutorial I was following is [here](https://rimworldwiki.com/wiki/Plague_Gun_
 
 ## Testing
 I can't remember how I debugged it before, but building the project in debug so the assembly gets updated, then copying the whole folder into the `Rimworld/Mods` folder should allow you to test it.
-
-
-# Where I go to
-* Looking at `Thing.cs`, there is a method called `Notify_ColorChanged()`, and looking at usages, the Bed seems to use it when changing designation.  And it uses the `DrawColor` property.  I wonder if I can override that method.
-* I also need to work out how to tell what the age of the blood is, so that I can calculate the color..
-* There seems to be a tick type, that I might be able to use, along with the `Tick()` method override, to call `Notify_ColorChanged()` (if that is necessary).

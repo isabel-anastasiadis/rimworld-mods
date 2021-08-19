@@ -12,23 +12,7 @@ namespace Izzimon.BloodDries
         private static Color DriedBloodColor = new Color(77, 54, 54, 180);
         private static int DaysUntilFullyDry = 1;
 
-
-        private int gameTickConstructedIn; 
-
-
-        public Blood() {
-            this.gameTickConstructedIn = Find.TickManager.TicksGame;      
-        }
-
-        private float PercentageDried { 
-            get {
-                var ageInTicks = Find.TickManager.TicksGame - this.gameTickConstructedIn;
-
-                var ageInDays = ageInTicks / 60000f;
-
-                return Math.Min(ageInDays/ DaysUntilFullyDry, 1f);
-            } 
-        }
+        private float percentageDried = 0;
 
         public override void SpawnSetup(Map map, bool respawningAfterLoad)
         {
@@ -47,22 +31,18 @@ namespace Izzimon.BloodDries
         }
 
 
-        private float GetCurrentValue(float from, float to) {
-
-            var difference = (to - from) * PercentageDried;
-            return from + difference;
-        }
-
-
         public override Color DrawColor
         {
             get
             {
-                var red = GetCurrentValue(FreshBloodColor.r, DriedBloodColor.r);
-                var green = GetCurrentValue(FreshBloodColor.g, DriedBloodColor.g);
-                var blue = GetCurrentValue(FreshBloodColor.b, DriedBloodColor.b);
+                var red = GetCurrentValue(FreshBloodColor.r, DriedBloodColor.r)/255;
+                var green = GetCurrentValue(FreshBloodColor.g, DriedBloodColor.g)/255;
+                var blue = GetCurrentValue(FreshBloodColor.b, DriedBloodColor.b)/255;
+                var alpha = 180 / 255f;
 
-                return new Color(red, green, blue, 180);
+                var color = new Color(red, green, blue, alpha);
+
+                return color;
             }
             set
             {
@@ -77,6 +57,37 @@ namespace Izzimon.BloodDries
             }
         }
 
+        public override void TickLong()
+        {
+            DryMore();
+        }
+
+        public override void ExposeData()
+        {
+            base.ExposeData();
+            Scribe_Values.Look<float>(ref this.percentageDried, "percentageDried", 0f, false);
+        }
+
+        private void DryMore() {
+            if (this.percentageDried == 1f) {
+                return;
+            }
+
+            var percentageToDryPerHour = 2000f / 60000 * DaysUntilFullyDry;  // long tick = 2000 ticks.  one day in game time = 60000 ticks.
+
+            this.percentageDried += percentageToDryPerHour;
+            this.percentageDried = Math.Min(this.percentageDried, 1f);
+
+            this.Notify_ColorChanged(); // do we need this?
+        }
+
+
+
+        private float GetCurrentValue(float from, float to)
+        {
+            var difference = (to - from) * this.percentageDried;
+            return from + difference;
+        }
 
 
     }

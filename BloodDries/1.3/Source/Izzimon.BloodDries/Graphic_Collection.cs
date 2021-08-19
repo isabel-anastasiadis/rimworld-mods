@@ -52,10 +52,7 @@ namespace Izzimon.BloodDries
 			for (int i = 0; i < list.Count; i++)
 			{
 				string path = req.path + "/" + list[i].name;
-				Log.Message("Color of the subGraphic before creating: " + this.color.ToString());
-
 				this.subGraphics[i] = GraphicDatabase.Get(typeof(Graphic_Single), path, req.shader, this.drawSize, this.color, this.colorTwo, this.data, req.shaderParameters, null);
-				Log.Message("Color of the subGraphic after creating: " + this.subGraphics[i].color.ToString());
 			}
 		}
 

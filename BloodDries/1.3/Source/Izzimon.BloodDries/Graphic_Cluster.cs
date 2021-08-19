@@ -87,8 +87,7 @@ namespace Izzimon.BloodDries
 
 		public override Graphic GetColoredVersion(Shader newShader, Color newColor, Color newColorTwo)
 		{
-			Log.Message(newColor.ToString());
-
+			Log.Message("Entered GetColoredVersion with color: " + newColor.ToString());
 
 			var coloredVersion = new Graphic_Cluster();
 			var graphicRequest = new GraphicRequest()
@@ -103,8 +102,6 @@ namespace Izzimon.BloodDries
 			};
 
 			coloredVersion.Init(graphicRequest);
-
-			Log.Message(coloredVersion.subGraphics[0].color.ToString());
 
 			return coloredVersion;
 		}

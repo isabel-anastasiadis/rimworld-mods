@@ -39,14 +39,6 @@ namespace Izzimon.BloodDries
 
             // save a reference to the terrain type it is on
             this.terrainType = base.Map.terrainGrid.TerrainAt(base.Position);
-
-            if (respawningAfterLoad && ShouldShowAsSmear()) {
-                this.Graphic.path = "Things/Filth/Grainy";
-            }
-
-
-            // raise a message to ensure we've hooked into it correctly
-            //MoteMaker.ThrowText(base.Position.ToVector3(), base.Map, "Blood spawned", 3f);
         }
 
 
@@ -134,17 +126,9 @@ namespace Izzimon.BloodDries
             this.percentageEroded += percentageMoreToErode;
             this.percentageEroded = Math.Min(this.percentageEroded, 1f);
 
-            if (ShouldShowAsSmear()) {
-                this.Graphic.path = "Things/Filth/Grainy";
-            }
-            
             return true;
         }
-
-        private bool ShouldShowAsSmear() {
-            return this.percentageEroded > 0.33f;
-        }
-
+        
         private float GetWeightedAverage(float from, float to, float transitionPercentage)
         {
             var difference = (to - from) * transitionPercentage;

@@ -9,7 +9,7 @@
   <description>
 &lt;size=24&gt;About&lt;/size&gt;
 
-Blood that has splattered on the ground now steadily darkens as it dries up over a few days (if the temperature is above 0). It also gradually fades as it erodes.
+Blood that has splattered on the ground now steadily darkens as it dries up over a few days (if the temperature is above 0, and faster if it is hot). It also gradually fades as it approaches the point where it disappears.
 
 I made this mod because I was getting frustrated by there being dessicated corpses surrounded by fresh blood dotted around the map (particularly when playing in a warm biome without much rain).
 
@@ -18,7 +18,11 @@ This is my first coding mod, so very open to feedback and suggestions.
 
 &lt;size=24&gt;Compatibility&lt;/size&gt;
 
-It doesn't break with "Blood Stains" (although you'll see dried blood footprints).  It also works with "Brighter Blood" - I'd just recommend putting this mod after it in the load order, because it needed patching.
+It won't break your save if you want to remove it again - you'll see an error initially, but if you save and load again it should be all fixed.
+
+&lt;size=15&gt;Other blood related mods&lt;/size&gt;
+
+It doesn't break with "Blood Stains" (although you'll see dried blood footprints).  I've patched it to work fine with "Brighter Blood"; this mod just needs to be loaded after it.
   </description>
   <loadAfter>
 	<li>Mlie.BrighterBlood</li>

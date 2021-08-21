@@ -25,8 +25,6 @@ namespace Izzimon.BloodDries
         private float percentageDried = 0;
         private float percentageEroded = 0;
 
-        private TerrainDef terrainType;
-
         public override void SpawnSetup(Map map, bool respawningAfterLoad)
         {
             base.SpawnSetup(map, respawningAfterLoad);
@@ -36,9 +34,6 @@ namespace Izzimon.BloodDries
                 // it will have been destroyed already, so do nothing.
                 return;
             }
-
-            // save a reference to the terrain type it is on
-            this.terrainType = base.Map.terrainGrid.TerrainAt(base.Position);
         }
 
 
@@ -78,6 +73,7 @@ namespace Izzimon.BloodDries
 
             if (percentageEroded == 1f)
             {
+                Log.Message($"100% eroded, destroying {this}");
                 this.Destroy(DestroyMode.Vanish);
             }
             else if (changed)
@@ -93,7 +89,8 @@ namespace Izzimon.BloodDries
             Scribe_Values.Look<float>(ref this.percentageDried, "percentageDried", 0f, false);
         }
 
-        private bool DryMore() {
+        private bool DryMore() 
+        {
             if (this.percentageDried == 1f) {
                 return false;
             }
@@ -114,14 +111,11 @@ namespace Izzimon.BloodDries
 
             return true;
         }
+        
+        private bool ErodeMore() 
+        {
 
-        private bool ErodeMore() {
-
-            var percentageMoreToErode = 2000f/ this.DisappearAfterTicks; 
-
-            if (this.terrainType.defName == "Sand" || this.terrainType.defName == "SoftSand" ) {
-                percentageMoreToErode *= 20;  // more erosion on soft terrains
-            }
+            var percentageMoreToErode = 2000f / this.DisappearAfterTicks;
 
             this.percentageEroded += percentageMoreToErode;
             this.percentageEroded = Math.Min(this.percentageEroded, 1f);

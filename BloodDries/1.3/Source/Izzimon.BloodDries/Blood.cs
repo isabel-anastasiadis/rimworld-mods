@@ -20,7 +20,7 @@ namespace Izzimon.BloodDries
         private static int MinimumAlpha = 15;
 
         private static int StandardTemperature = 20;
-        private static int DaysUntilFullyDryAtStandardTemperature = 2;
+        private static int DaysUntilFullyDryAtStandardTemperature = 3;
 
         private float percentageDried = 0;
         private float percentageEroded = 0;
@@ -73,7 +73,6 @@ namespace Izzimon.BloodDries
 
             if (percentageEroded == 1f)
             {
-                Log.Message($"100% eroded, destroying {this}");
                 this.Destroy(DestroyMode.Vanish);
             }
             else if (changed)

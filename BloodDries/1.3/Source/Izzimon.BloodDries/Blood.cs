@@ -25,6 +25,11 @@ namespace Izzimon.BloodDries
         private float percentageDried = 0;
         private float percentageEroded = 0;
 
+        // we don't want to publish a whole range of shades, as that will fill up the graphic database 
+        private static float PublishPercentageStep = 0.20f;  // only publish every 20% step change
+        private float driedPublishPercentage = 0;
+        private float erodedPublishPercentage = 0;
+
         public override void SpawnSetup(Map map, bool respawningAfterLoad)
         {
             base.SpawnSetup(map, respawningAfterLoad);
@@ -34,6 +39,12 @@ namespace Izzimon.BloodDries
                 // it will have been destroyed already, so do nothing.
                 return;
             }
+
+            if (respawningAfterLoad) 
+            {
+                UpdatePublishPercentage("dryness", ref this.driedPublishPercentage, this.percentageDried);
+                UpdatePublishPercentage("erosion", ref this.erodedPublishPercentage, this.percentageEroded);
+            }
         }
 
 
@@ -41,10 +52,10 @@ namespace Izzimon.BloodDries
         {
             get
             {
-                var red = GetWeightedAverage(FreshBloodR, DriedBloodR, percentageDried) / 255;
-                var green = GetWeightedAverage(FreshBloodG, DriedBloodG, percentageDried) / 255;
-                var blue = GetWeightedAverage(FreshBloodB, DriedBloodB, percentageDried) / 255;
-                var alpha = GetWeightedAverage(DefaultAlpha, MinimumAlpha, percentageEroded) / 255;
+                var red = GetWeightedAverage(FreshBloodR, DriedBloodR, driedPublishPercentage) / 255;
+                var green = GetWeightedAverage(FreshBloodG, DriedBloodG, driedPublishPercentage) / 255;
+                var blue = GetWeightedAverage(FreshBloodB, DriedBloodB, driedPublishPercentage) / 255;
+                var alpha = GetWeightedAverage(DefaultAlpha, MinimumAlpha, erodedPublishPercentage) / 255;
 
                 var color = new Color(red, green, blue, alpha);
 
@@ -86,6 +97,7 @@ namespace Izzimon.BloodDries
         {
             base.ExposeData();
             Scribe_Values.Look<float>(ref this.percentageDried, "percentageDried", 0f, false);
+            Scribe_Values.Look<float>(ref this.percentageEroded, "percentageEroded", 0f, false);
         }
 
         private bool DryMore() 
@@ -108,7 +120,8 @@ namespace Izzimon.BloodDries
             this.percentageDried += percentageMoreToDry;
             this.percentageDried = Math.Min(this.percentageDried, 1f);
 
-            return true;
+            return UpdatePublishPercentage("dryness", ref this.driedPublishPercentage, this.percentageDried);
+
         }
         
         private bool ErodeMore() 
@@ -119,7 +132,19 @@ namespace Izzimon.BloodDries
             this.percentageEroded += percentageMoreToErode;
             this.percentageEroded = Math.Min(this.percentageEroded, 1f);
 
-            return true;
+            return UpdatePublishPercentage("erosion", ref this.erodedPublishPercentage, this.percentageEroded);
+        }
+
+        private bool UpdatePublishPercentage(string type, ref float publishPercentageProperty, float rawPercentage) {
+            // work out what the publish percentage should be
+            var publishPercentage = rawPercentage == 1f ? 1f : (float) (Math.Floor(rawPercentage / PublishPercentageStep) * PublishPercentageStep);
+
+            if (publishPercentageProperty < publishPercentage) {
+                publishPercentageProperty = publishPercentage;
+                return true;
+            }
+
+            return false;
         }
         
         private float GetWeightedAverage(float from, float to, float transitionPercentage)

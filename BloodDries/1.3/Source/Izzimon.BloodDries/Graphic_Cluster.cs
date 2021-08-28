@@ -9,6 +9,8 @@ namespace Izzimon.BloodDries
 
 		public override Graphic GetColoredVersion(Shader newShader, Color newColor, Color newColorTwo)
 		{
+			Logger.Debug($"GetColoredVersion called with color {newColor}");
+
 			var coloredVersion = new Graphic_Cluster();
 			var graphicRequest = new GraphicRequest()
 			{

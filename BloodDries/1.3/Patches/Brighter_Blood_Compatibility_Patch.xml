@@ -13,7 +13,7 @@
 			<li Class="PatchOperationAdd">
 				<xpath>(/Defs/ThingDef[defName="Filth_Blood"])[last()]/filth</xpath>
 				<value>
-					<disappearsInDays>15~20</disappearsInDays>
+					<disappearsInDays>40~45</disappearsInDays>
 				</value>
 			</li>
 		</operations>

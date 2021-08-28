@@ -54,7 +54,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Blood.cs" />
-    <Compile Include="BloodDriesGameComponent.cs" />
+    <Compile Include="BloodDries_MapComponent.cs" />
     <Compile Include="Graphic_Cluster.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

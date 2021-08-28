@@ -45,6 +45,8 @@ namespace Izzimon.BloodDries
                 UpdatePublishPercentage("dryness", ref this.driedPublishPercentage, this.percentageDried);
                 UpdatePublishPercentage("erosion", ref this.erodedPublishPercentage, this.percentageEroded);
             }
+
+            Logger.Debug($"{this} will disappear in {this.DisappearAfterTicks / 60000f} days");
         }
 
 
@@ -126,7 +128,6 @@ namespace Izzimon.BloodDries
         
         private bool ErodeMore() 
         {
-
             var percentageMoreToErode = 2000f / this.DisappearAfterTicks;
 
             this.percentageEroded += percentageMoreToErode;
@@ -139,7 +140,10 @@ namespace Izzimon.BloodDries
             // work out what the publish percentage should be
             var publishPercentage = rawPercentage == 1f ? 1f : (float) (Math.Floor(rawPercentage / PublishPercentageStep) * PublishPercentageStep);
 
+            Logger.Debug($"{this} {type} publish value should be {publishPercentage} (raw value {rawPercentage})");
+
             if (publishPercentageProperty < publishPercentage) {
+                Logger.Debug($"{this} {type} published new value {publishPercentage}");
                 publishPercentageProperty = publishPercentage;
                 return true;
             }

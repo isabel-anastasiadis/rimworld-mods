@@ -20,41 +20,42 @@ namespace Izzimon.BloodDries
         {
             base.FinalizeInit();
 
-            //if (!ScribeMetaHeaderUtility.loadedModNamesList.Any(modName => modName == "Blood Dries")) {
-            //Log.Message("File was not saved with Blood Dries mod active");
+            if (Find.CurrentMap != null) {
+                var allThings = Find.CurrentMap.GetDirectlyHeldThings();
+                var bloodToTidyUp = new List<Filth>();
 
-            var allThings = Find.CurrentMap.GetDirectlyHeldThings();
-            var bloodToTidyUp = new List<Filth>();
+                for (int i = 0; i < allThings.Count; i++)
+                {
+                    var thing = allThings[i];
 
-            for (int i = 0; i < allThings.Count; i++) 
-            {
-                var thing = allThings[i];
-
-                if (thing.def.defName == "Filth_Blood") {
-
-                    if (!(thing is Blood thingAsBlood))
+                    if (thing.def.defName == "Filth_Blood")
                     {
-                        bloodToTidyUp.Add((Filth) thing);
+
+                        if (!(thing is Blood thingAsBlood))
+                        {
+                            bloodToTidyUp.Add((Filth)thing);
+                        }
                     }
-                }    
+                }
+
+                if (bloodToTidyUp.Count > 0)
+                {
+                    Log.Message($"Found {bloodToTidyUp.Count} instances of blood that have the wrong class.  Replacing them with new copies.");
+                }
+
+                // now tidy them up
+                foreach (var oldBlood in bloodToTidyUp)
+                {
+                    Logger.Debug($"Spawning new blood to replace {oldBlood}..");
+                    var newBlood = (Filth)ThingMaker.MakeThing(oldBlood.def, null);
+                    newBlood.AddSources(oldBlood.sources);
+                    GenSpawn.Spawn(newBlood, oldBlood.Position, map, WipeMode.Vanish);
+
+                    Logger.Debug($"Destroying {oldBlood}..");
+                    oldBlood.Destroy(DestroyMode.Vanish);
+                }
             }
 
-            if (bloodToTidyUp.Count > 0) {
-                Log.Message($"Found {bloodToTidyUp.Count} instances of blood that have the wrong class.  Replacing them with new copies.");
-            }
-
-            // now tidy them up
-            foreach (var oldBlood in bloodToTidyUp) 
-            {
-                Logger.Debug($"Spawning new blood to replace {oldBlood}..");
-                var newBlood = (Filth)ThingMaker.MakeThing(oldBlood.def, null);
-                newBlood.AddSources(oldBlood.sources);
-                GenSpawn.Spawn(newBlood, oldBlood.Position, map, WipeMode.Vanish);
-
-                Logger.Debug($"Destroying {oldBlood}..");
-                oldBlood.Destroy(DestroyMode.Vanish);
-            }
-  
         }
 
     }

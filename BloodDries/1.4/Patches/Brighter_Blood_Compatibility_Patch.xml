@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<Patch>
+
+	<Operation Class="PatchOperationSequence">
+		<!-- check for disappearInDays, and if not found, add it -->
+		<success>Always</success>
+		<operations>
+			<li Class="PatchOperationTest">
+				<xpath>(/Defs/ThingDef[defName="Filth_Blood"])[last()]/filth/disappearsInDays</xpath>
+				<success>Invert</success>
+			</li>
+
+			<li Class="PatchOperationAdd">
+				<xpath>(/Defs/ThingDef[defName="Filth_Blood"])[last()]/filth</xpath>
+				<value>
+					<disappearsInDays>40~45</disappearsInDays>
+				</value>
+			</li>
+		</operations>
+	</Operation>
+
+</Patch>
